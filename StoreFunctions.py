@@ -81,6 +81,50 @@ def find_password():
             messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 
+def show_again():
+    StoreUI.window_2.update()
+    StoreUI.window_2.deiconify()
+    StoreUI.window.withdraw()
+    # StoreUI.window.deiconify()
+
+
+def save_bread_price():
+    # bread = "bread_prices"
+    bread_prices = "bread_prices"
+    bread_price_one = StoreUI.bread_entry_1.get()
+    bread_data = {
+        bread_prices: {
+            "bread_price_1": bread_price_one,
+            # "bread_price_2" = StoreUI.bread_entry_2,
+            # "bread_price_3" = StoreUI.bread_entry_3,
+            # "bread_price_4" = StoreUI.bread_entry_4,
+        }
+    }
+
+    try:
+        with open("data.json", "r") as data_file:
+            # Reading old data
+            data = json.load(data_file)
+            # json.dump(bread_prices, data_file, indent=4)
+    except FileNotFoundError:
+        print("There is no data")
+        # with open("data.json", "w") as data_file:
+        #     json.dump(bread_data, data_file, indent=4)
+
+    else:
+        # Updating old data with new data
+        data.update(bread_data)
+        with open("data.json", "w") as data_file:
+            # Saving updated data
+            json.dump(data, data_file, indent=4)
+
+    # finally:
+    #     StoreUI.website_entry.delete(0, END)
+    #     StoreUI.password_entry.delete(0, END)
+
+
+
+
 def check_user():
     user = StoreUI.email_entry.get()
     print(user)
@@ -96,7 +140,7 @@ def check_user():
             password = data[user]["password"]
             if StoreUI.password_entry.get() == password:
                 messagebox.showinfo(title=user, message=f"Welcome to a new day of sales")
-                StoreUI.window_2.destroy()
+                StoreUI.window_2.withdraw()
                 StoreUI.window.deiconify()
             else:
                 messagebox.showinfo(title="Error", message=f"La contrasena es incorrecta")

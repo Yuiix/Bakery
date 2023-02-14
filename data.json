@@ -7,8 +7,11 @@
         "email": "angela@gmail.com",
         "password": "#ldgOuY#$d3GVv2"
     },
-        "socorro0708": {
+    "socorro0708": {
         "email": "socorro0708",
         "password": "123"
+    },
+    "bread_prices": {
+        "bread_price_1": "156"
     }
 }
