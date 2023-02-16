@@ -112,7 +112,7 @@ save_button.grid(row=7, column=1)  # columnspan=2)
 
 add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15, command=lambda: StoreFunctions.save_bread_price())
 add_extra_bread_button.grid(row=3, column=6)  # columnspan=2)
-# Dummy commit 3
+# Dummy commit 4
 # TO DO create the json with the date name
 # TO DO include the total of bread and prices of that day into the json file
 # TO DO include the total of bread sold, left and total money of the day
