@@ -11,7 +11,21 @@
         "email": "socorro0708",
         "password": "123"
     },
+    "socorro070808": {
+        "email": "socorro070808",
+        "password": "123"
+    },
     "bread_prices": {
-        "bread_price_1": "156"
+        "bread_price_1": "3",
+        "bread_price_2": "3",
+        "bread_price_3": "3",
+        "bread_price_4": "3"
+    },
+    "bread_quantities": {
+        "bread_quantity_1": "2",
+        "bread_quantity_2": "2",
+        "bread_quantity_3": "2",
+        "bread_quantity_4": "2",
+        "bread_quantity_5": "2"
     }
 }

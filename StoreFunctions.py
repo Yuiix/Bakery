@@ -1,84 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-from random import choice, randint, shuffle
-import pyperclip
 import json
 import StoreUI
-
-
-# ---------------------------- PASSWORD GENERATOR ------------------------------- #
-
-# Password Generator Project
-def generate_password():
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
-
-    password_letters = [choice(letters) for _ in range(randint(8, 10))]
-    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
-    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
-
-    password_list = password_letters + password_symbols + password_numbers
-    shuffle(password_list)
-
-    password = "".join(password_list)
-    StoreUI.password_entry.insert(0, password)
-    pyperclip.copy(password)
-
-
-# ---------------------------- SAVE PASSWORD ------------------------------- #
-def save():
-    print("Hello debug")
-    website = StoreUI.website_entry.get()
-    email = StoreUI.email_entry.get()
-    password = StoreUI.password_entry.get()
-    new_data = {
-        website: {
-            "email": email,
-            "password": password,
-        }
-    }
-
-    if len(website) == 0 or len(password) == 0:
-        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
-    else:
-        try:
-            with open("data.json", "r") as data_file:
-                # Reading old data
-                data = json.load(data_file)
-        except FileNotFoundError:
-            with open("data.json", "w") as data_file:
-                json.dump(new_data, data_file, indent=4)
-        else:
-            # Updating old data with new data
-            data.update(new_data)
-
-            with open("data.json", "w") as data_file:
-                # Saving updated data
-                json.dump(data, data_file, indent=4)
-        finally:
-            StoreUI.website_entry.delete(0, END)
-            StoreUI.password_entry.delete(0, END)
-
-
-# ---------------------------- FIND PASSWORD ------------------------------- #
-def find_password():
-    website = StoreUI.website_entry.get()
-    try:
-        with open("data.json") as data_file:
-            data = json.load(data_file)
-    except FileNotFoundError:
-        messagebox.showinfo(title="Error", message="No Data File Found.")
-    else:
-        if website in data:
-            email = data[website]["email"]
-            password = data[website]["password"]
-            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
-
-        else:
-            messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 
 def show_again():
@@ -89,15 +12,19 @@ def show_again():
 
 
 def save_bread_price():
-    # bread = "bread_prices"
-    bread_prices = "bread_prices"
-    bread_price_one = StoreUI.bread_entry_1.get()
     bread_data = {
-        bread_prices: {
-            "bread_price_1": bread_price_one,
-            # "bread_price_2" = StoreUI.bread_entry_2,
-            # "bread_price_3" = StoreUI.bread_entry_3,
-            # "bread_price_4" = StoreUI.bread_entry_4,
+        "bread_prices": {
+            "bread_price_1": StoreUI.bread_entry_1.get(),
+            "bread_price_2": StoreUI.bread_entry_2.get(),
+            "bread_price_3": StoreUI.bread_entry_3.get(),
+            "bread_price_4": StoreUI.bread_entry_4.get(),
+        },
+        "bread_quantities": {
+            "bread_quantity_1": StoreUI.bread_entry_5.get(),
+            "bread_quantity_2": StoreUI.bread_entry_6.get(),
+            "bread_quantity_3": StoreUI.bread_entry_7.get(),
+            "bread_quantity_4": StoreUI.bread_entry_8.get(),
+            "bread_quantity_5": StoreUI.bread_entry_9.get(),
         }
     }
 
@@ -105,30 +32,19 @@ def save_bread_price():
         with open("data.json", "r") as data_file:
             # Reading old data
             data = json.load(data_file)
-            # json.dump(bread_prices, data_file, indent=4)
     except FileNotFoundError:
         print("There is no data")
-        # with open("data.json", "w") as data_file:
-        #     json.dump(bread_data, data_file, indent=4)
-
     else:
         # Updating old data with new data
         data.update(bread_data)
         with open("data.json", "w") as data_file:
             # Saving updated data
             json.dump(data, data_file, indent=4)
-
-    # finally:
-    #     StoreUI.website_entry.delete(0, END)
-    #     StoreUI.password_entry.delete(0, END)
-
-
+            StoreUI.window.update()
 
 
 def check_user():
     user = StoreUI.email_entry.get()
-    print(user)
-
     try:
         with open("data.json") as data_file:
             data = json.load(data_file)
@@ -136,12 +52,25 @@ def check_user():
         messagebox.showinfo(title="Error", message="No Data File Found.")
     else:
         if user in data:
-            # email = data[website]["email"]
             password = data[user]["password"]
-            if StoreUI.password_entry.get() == password:
+            if StoreUI.password_entry.get() == password and user == "socorro0708":
                 messagebox.showinfo(title=user, message=f"Welcome to a new day of sales")
                 StoreUI.window_2.withdraw()
+                entries = [StoreUI.bread_entry_1, StoreUI.bread_entry_2, StoreUI.bread_entry_3, StoreUI.bread_entry_4,
+                           StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8,
+                           StoreUI.bread_entry_9]
+                for x, i in enumerate(entries):
+                    i.delete(0, END)
+                    if x <= 3:
+                        i.insert(0, data["bread_prices"]["bread_price_" + str(x + 1)])
+                    else:
+                        i.insert(0, data["bread_quantities"]["bread_quantity_" + str(x - 3)])
                 StoreUI.window.deiconify()
+            elif StoreUI.password_entry.get() == password and user == "socorro070808":
+                print("Hello")
+                StoreUI.window_2.withdraw()
+                StoreUI.window.withdraw()
+                StoreUI.window_3.deiconify()
             else:
                 messagebox.showinfo(title="Error", message=f"La contrasena es incorrecta")
         else:
