@@ -1,12 +1,12 @@
-from tkinter import Canvas, PhotoImage, Label, Entry, Tk, Button, Toplevel
+from tkinter import Canvas, PhotoImage, Label, Entry, Tk, Button, Toplevel, Frame, Menu, OptionMenu, StringVar
 from PIL import Image, ImageTk
 import StoreFunctions
 
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
-window_2 = Toplevel(window)
-window_3 = Toplevel(window)
+window_2 = Toplevel()
+window_3 = Toplevel()
 window_3.title("Panaderia Plaza Vieja")
 window_3.config(padx=50, pady=50, bg="#F4FCD9")
 window_2.title("Panaderia Plaza Vieja")
@@ -30,7 +30,21 @@ resize_image_2 = image_2.resize((400, 300), Image.ANTIALIAS)
 new_image_2 = ImageTk.PhotoImage(resize_image_2)
 canvas_2.create_image(350, 250, image=new_image_2)
 canvas_2.grid(row=0, column=0, columnspan=6)
+# ------------------------- Canvas set up for Third Window -------------#
+canvas_3 = Canvas(window_3, height=400, width=400, bg="#F4FCD9", highlightthickness=0)
+# Load an image in the script
+image_3 = (Image.open("breads-g518892b9c_1920.jpg"))
+resize_image_3 = image_3.resize((750, 750), Image.ANTIALIAS)
+new_image_3 = ImageTk.PhotoImage(resize_image_3)
+canvas_3.create_image(0, 0, image=new_image_3)
+canvas_3.grid(row=0, column=0, columnspan=1)
 
+# ------------------------- Frame creation for Third windows -----------
+menu_frame = Frame(window_3, bg='gray')
+menu_frame.grid(row=0, column=1, sticky='ns')
+menu = Menu(window_3)
+window_3.config(menu=menu)
+# ##-----------------------------------------------
 email_label = Label(window_2, text="Usuario:")
 email_label.grid(row=2, column=0)
 password_label = Label(window_2, text="Contrasena:")
@@ -48,33 +62,24 @@ log_button = Button(window_2, text="Entrar", width=36, command=lambda: StoreFunc
 log_button.grid(row=4, column=1)  # columnspan=2)
 
 # -------------------------Label's for bread price ----------------------
-bread_label_1 = Label(window, text="Precio del Pan #1:")
-bread_label_1.grid(row=2, column=0)
-
-bread_label_2 = Label(window, text="Precio del Pan #2:")
-bread_label_2.grid(row=3, column=0)
-
-bread_label_3 = Label(window, text="Precio del Pan #3:")
-bread_label_3.grid(row=4, column=0)
-
-bread_label_4 = Label(window, text="Precio del Pan #4:")
-bread_label_4.grid(row=5, column=0)
+for o in range(1, 5):
+    bread_label_prices = Label(window, text="Precio del Pan #" + str(o))
+    bread_label_prices.grid(row=o + 1, column=0)
 
 # -------------------------Label's for bread quantity ----------------------
-bread_label_5 = Label(window, text="Cantidad del Pan #1:")
-bread_label_5.grid(row=2, column=2)
-
-bread_label_6 = Label(window, text="Cantidad del Pan #2:")
-bread_label_6.grid(row=3, column=2)
-
-bread_label_7 = Label(window, text="Cantidad del Pan #3:")
-bread_label_7.grid(row=4, column=2)
-
-bread_label_8 = Label(window, text="Cantidad del Pan #4:")
-bread_label_8.grid(row=5, column=2)
-
+for n in range(1, 5):
+    bread_label_quantity = Label(window, text="Cantidad del Pan #" + str(n))
+    bread_label_quantity.grid(row=n + 1, column=2)
 bread_label_9 = Label(window, text="Cantidad del Pan extra:")
 bread_label_9.grid(row=2, column=5)
+
+# -------------------------Label's for bread sells ----------------------
+for i in range(1, 5):
+    bread_label_sell = Label(menu_frame, text="Cantidad a vender del Pan #" + str(i))
+    bread_label_sell.grid(row=i, column=1, padx=10, pady=10)
+
+bread_label_14 = Label(menu_frame, text="Total a cobrar")
+bread_label_14.grid(row=5, column=1, padx=10, pady=10)
 
 # -------------------------Entry's for bread price ----------------------
 bread_entry_1 = Entry(window, width=15)
@@ -110,8 +115,21 @@ exit_button.grid(row=7, column=2)  # columnspan=2)
 save_button = Button(window, text="Guardar", width=15, command=lambda: StoreFunctions.save_bread_price())
 save_button.grid(row=7, column=1)  # columnspan=2)
 
-add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15, command=lambda: StoreFunctions.save_bread_price())
+add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15,
+                                command=lambda: StoreFunctions.save_bread_price())
 add_extra_bread_button.grid(row=3, column=6)  # columnspan=2)
+
+# Create a list to store the selected options
+selected_options = [StringVar() for i in range(6)]
+# Set the initial values of the selected options
+for i in range(6):
+    selected_options[i].set("0")
+    print(selected_options[i].get())
+
+for x in range(1, 5):
+    quantity_options = [str(i) for i in range(1, 11)]
+    quantity_dropdown = OptionMenu(menu_frame, selected_options[x], *quantity_options)
+    quantity_dropdown.grid(row=x, column=3)
 # Dummy commit 7
 # TO DO create the json with the date name
 # TO DO include the total of bread and prices of that day into the json file
