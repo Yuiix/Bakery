@@ -1,6 +1,8 @@
-from tkinter import Canvas, PhotoImage, Label, Entry, Tk, Button, Toplevel, Frame, Menu, OptionMenu, StringVar
+from tkinter import Canvas, Label, Entry, Tk, Button, Toplevel, Frame, Menu, OptionMenu, StringVar, \
+    messagebox
 from PIL import Image, ImageTk
 import StoreFunctions
+import json
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -39,7 +41,7 @@ new_image_3 = ImageTk.PhotoImage(resize_image_3)
 canvas_3.create_image(0, 0, image=new_image_3)
 canvas_3.grid(row=0, column=0, columnspan=1)
 
-# ------------------------- Frame creation for Third windows -----------
+# ------------------------- Frame creation for Third window -----------
 menu_frame = Frame(window_3, bg='gray')
 menu_frame.grid(row=0, column=1, sticky='ns')
 menu = Menu(window_3)
@@ -51,7 +53,7 @@ password_label = Label(window_2, text="Contrasena:")
 password_label.grid(row=3, column=0)
 
 email_entry = Entry(window_2, width=24)
-email_entry.grid(row=2, column=1)  # columnspan=2)
+email_entry.grid(row=2, column=1)
 email_entry.insert(0, "socorro0708")
 
 password_entry = Entry(window_2, width=24)
@@ -59,9 +61,9 @@ password_entry.grid(row=3, column=1)
 
 # -------------------------Button's for log in ----------------------
 log_button = Button(window_2, text="Entrar", width=36, command=lambda: StoreFunctions.check_user())
-log_button.grid(row=4, column=1)  # columnspan=2)
+log_button.grid(row=4, column=1)
 
-# -------------------------Label's for bread price ----------------------
+# -------------------------Label's for bread price -------------------------
 for o in range(1, 5):
     bread_label_prices = Label(window, text="Precio del Pan #" + str(o))
     bread_label_prices.grid(row=o + 1, column=0)
@@ -73,13 +75,25 @@ for n in range(1, 5):
 bread_label_9 = Label(window, text="Cantidad del Pan extra:")
 bread_label_9.grid(row=2, column=5)
 
-# -------------------------Label's for bread sells ----------------------
+# -------------------------Label's for bread sells ------------------------
 for i in range(1, 5):
     bread_label_sell = Label(menu_frame, text="Cantidad a vender del Pan #" + str(i))
     bread_label_sell.grid(row=i, column=1, padx=10, pady=10)
 
 bread_label_14 = Label(menu_frame, text="Total a cobrar")
 bread_label_14.grid(row=5, column=1, padx=10, pady=10)
+# -------------------------Label's for bread sells price ----------------------
+try:
+    with open("data.json") as data_file:
+        data = json.load(data_file)
+        bread_sell_labels = []
+        for i in range(1, 5):
+            label_with_price = Label(menu_frame, text="x " + data["bread_prices"]["bread_price_" + str(i)])
+            label_with_price.grid(row=i, column=4, padx=10, pady=10)
+            bread_sell_labels.append(label_with_price)
+except FileNotFoundError:
+    messagebox.showinfo(title="Error", message="No Data File Found.")
+# StoreFunctions.update_labels()
 
 # -------------------------Entry's for bread price ----------------------
 bread_entry_1 = Entry(window, width=15)
@@ -108,29 +122,45 @@ bread_entry_8.grid(row=5, column=3)  # columnspan=2)
 
 bread_entry_9 = Entry(window, width=15)
 bread_entry_9.grid(row=2, column=6)  # columnspan=2)
-# -------------------------Button's for bread quantity ----------------------
-exit_button = Button(window, text="Salir", width=15, command=lambda: StoreFunctions.show_again())
-exit_button.grid(row=7, column=2)  # columnspan=2)
-
-save_button = Button(window, text="Guardar", width=15, command=lambda: StoreFunctions.save_bread_price())
-save_button.grid(row=7, column=1)  # columnspan=2)
-
-add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15,
-                                command=lambda: StoreFunctions.save_bread_price())
-add_extra_bread_button.grid(row=3, column=6)  # columnspan=2)
-
+# -------------------------Entry's for the bread sell ------------------------
 # Create a list to store the selected options
 selected_options = [StringVar() for i in range(6)]
 # Set the initial values of the selected options
 for i in range(6):
     selected_options[i].set("0")
-    print(selected_options[i].get())
-
+    # print(selected_options[i].get())
 for x in range(1, 5):
     quantity_options = [str(i) for i in range(1, 11)]
     quantity_dropdown = OptionMenu(menu_frame, selected_options[x], *quantity_options)
     quantity_dropdown.grid(row=x, column=3)
-# Dummy commit 7
+
+try:
+    with open("data.json") as data_file:
+        data = json.load(data_file)
+        bread_multiply_labels = []
+        for i in range(1, 5):
+            label_with_multiply = Label(menu_frame,
+                                        text=(str(float(data["bread_prices"]["bread_price_" + str(i)]) *
+                                                  float(selected_options[i].get()))))
+            label_with_multiply.grid(row=i, column=6, padx=10, pady=10)
+            bread_multiply_labels.append(label_with_multiply)
+except FileNotFoundError:
+    messagebox.showinfo(title="Error", message="No Data File Found.")
+# -------------------------Button's for bread quantity ----------------------
+exit_button = Button(window, text="Salir", width=15, command=lambda: StoreFunctions.show_again())
+exit_button.grid(row=7, column=2)
+
+save_button = Button(window, text="Guardar", width=15, command=lambda: StoreFunctions.save_bread_price())
+save_button.grid(row=7, column=1)
+
+add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15,
+                                command=lambda: StoreFunctions.save_bread_price())
+add_extra_bread_button.grid(row=3, column=6)
+# -------------------------Button's for bread sells ----------------------
+
+exit_button_for_sells = Button(menu_frame, text="Salir", width=15,
+                               command=lambda: StoreFunctions.show_again())
+exit_button_for_sells.grid(row=8, column=1)
 # TO DO create the json with the date name
 # TO DO include the total of bread and prices of that day into the json file
 # TO DO include the total of bread sold, left and total money of the day

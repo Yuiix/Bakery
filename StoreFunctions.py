@@ -1,14 +1,13 @@
-from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, END
 import json
 import StoreUI
 
 
 def show_again():
+    StoreUI.window.withdraw()
+    StoreUI.window_3.withdraw()
     StoreUI.window_2.update()
     StoreUI.window_2.deiconify()
-    StoreUI.window.withdraw()
-    # StoreUI.window.deiconify()
 
 
 def save_bread_price():
@@ -67,7 +66,6 @@ def check_user():
                         i.insert(0, data["bread_quantities"]["bread_quantity_" + str(x - 3)])
                 StoreUI.window.deiconify()
             elif StoreUI.password_entry.get() == password and user == "socorro070808":
-                print("Hello")
                 StoreUI.window_2.withdraw()
                 StoreUI.window.withdraw()
                 StoreUI.window_3.deiconify()
@@ -75,3 +73,19 @@ def check_user():
                 messagebox.showinfo(title="Error", message=f"La contrasena es incorrecta")
         else:
             messagebox.showinfo(title="Error", message=f"El usuario {user} no existe.")
+
+
+# ---------------------Function to update the labels --------------------------------------
+
+def update_labels():
+    with open("data.json") as data_file:
+        data = json.load(data_file)
+        for x, i in enumerate(StoreUI.bread_sell_labels):
+            i.configure(text=data["bread_prices"]["bread_price_" + str(x + 1)])
+
+    with open("data.json") as data_file:
+        data = json.load(data_file)
+        for x, i in enumerate(StoreUI.bread_multiply_labels):
+            i.configure(text=str(float(data["bread_prices"]["bread_price_" + str(x + 1)]) *
+                                 float(StoreUI.selected_options[x + 1].get())))
+        StoreUI.window_3.after(100, update_labels)

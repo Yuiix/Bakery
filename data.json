@@ -16,10 +16,10 @@
         "password": "123"
     },
     "bread_prices": {
-        "bread_price_1": "3",
-        "bread_price_2": "3",
-        "bread_price_3": "3",
-        "bread_price_4": "3"
+        "bread_price_1": "3.23",
+        "bread_price_2": ".34",
+        "bread_price_3": ".56",
+        "bread_price_4": ".23"
     },
     "bread_quantities": {
         "bread_quantity_1": "2",
