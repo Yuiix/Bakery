@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import StoreFunctions
 import json
 from datetime import date
+from FileCreator import create_files_with_sells
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -11,7 +12,7 @@ window = Tk()
 window_2 = Toplevel()
 window_3 = Toplevel()
 window_3.title("Panaderia Plaza Vieja")
-window_3.config(padx=50, pady=50, bg="#FEFBE9")
+window_3.config(padx=50, pady=50, bg="#ECF9FF")
 window_2.title("Panaderia Plaza Vieja")
 window_2.config(padx=50, pady=50, bg="#F4FCD9")
 window.title("Panaderia Plaza Vieja")
@@ -37,13 +38,13 @@ canvas_2.grid(row=0, column=0, columnspan=6)
 canvas_3 = Canvas(window_3, height=400, width=400, bg="#FEFBE9", highlightthickness=0)
 # Load an image in the script
 image_3 = (Image.open("breads-g518892b9c_1920.jpg"))
-resize_image_3 = image_3.resize((750, 750), Image.ANTIALIAS)
+resize_image_3 = image_3.resize((400, 400), Image.ANTIALIAS)
 new_image_3 = ImageTk.PhotoImage(resize_image_3)
-canvas_3.create_image(0, 0, image=new_image_3)
+canvas_3.create_image(200, 200, image=new_image_3)
 canvas_3.grid(row=0, column=0, columnspan=1)
 
 # ------------------------- Frame creation for Third window -----------
-menu_frame = Frame(window_3, bg='#E1EEDD')
+menu_frame = Frame(window_3, bg='#FFFBEB')
 menu_frame.grid(row=0, column=1, sticky='ns')
 menu = Menu(window_3)
 window_3.config(menu=menu)
@@ -82,9 +83,11 @@ bread_label_file.grid(row=6, column=5)
 # -------------------------Label's for bread sells ------------------------
 for i in range(1, 5):
     bread_label_sell = Label(menu_frame, text="Cantidad a vender del Pan #" + str(i))
+    bread_label_sell.config(bg="#FFE7CC")
     bread_label_sell.grid(row=i, column=1, padx=10, pady=10)
 
 bread_label_14 = Label(menu_frame, text="Total a cobrar")
+bread_label_14.config(bg="#FFE7CC")
 bread_label_14.grid(row=5, column=1, padx=10, pady=10)
 # -------------------------Label's for bread sells price ----------------------
 try:
@@ -93,12 +96,15 @@ try:
         bread_sell_labels = []
         for i in range(1, 5):
             label_with_price = Label(menu_frame, text="x " + data["bread_prices"]["bread_price_" + str(i)])
+            label_with_price.config(bg="#FFE7CC")
             label_with_price.grid(row=i, column=4, padx=10, pady=10)
+            # ------ List to update in the store functions---------------------
             bread_sell_labels.append(label_with_price)
 except FileNotFoundError:
     messagebox.showinfo(title="Error", message="No Data File Found.")
-
+# ------------------------- Label which contains the total to charge -----------
 bread_label_total = Label(menu_frame, text="0")
+bread_label_total.config(bg="#FFE7CC")
 bread_label_total.grid(row=5, column=6, padx=10, pady=10)
 # -------------------------Entry's for bread price ----------------------
 bread_entry_1 = Entry(window, width=15)
@@ -142,7 +148,7 @@ for x in range(1, 5):
     quantity_options = [str(i) for i in range(1, 11)]
     quantity_dropdown = OptionMenu(menu_frame, selected_options[x], *quantity_options)
     quantity_dropdown.grid(row=x, column=3)
-
+# ---------------------------- Label with the final price after multiply --------------------------------------
 try:
     with open("data.json") as data_file:
         data = json.load(data_file)
@@ -152,6 +158,7 @@ try:
                                         text=(str(float(data["bread_prices"]["bread_price_" + str(i)]) *
                                                   float(selected_options[i].get()))))
             label_with_multiply.grid(row=i, column=6, padx=10, pady=10)
+            label_with_multiply.config(bg="#FFE7CC")
             bread_multiply_labels.append(label_with_multiply)
 except FileNotFoundError:
     messagebox.showinfo(title="Error", message="No Data File Found.")
@@ -165,6 +172,10 @@ save_button.grid(row=7, column=1)
 add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15,
                                 command=lambda: StoreFunctions.save_bread_price())
 add_extra_bread_button.grid(row=3, column=6)
+
+obtain_bread_tickets_button = Button(window, text="Obtener tickets", width=15,
+                                command=lambda: create_files_with_sells())
+obtain_bread_tickets_button.grid(row=6, column=8)
 # -------------------------Button's for bread sells ----------------------
 
 exit_button_for_sells = Button(menu_frame, text="Salir", width=15,

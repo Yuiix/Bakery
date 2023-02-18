@@ -25,11 +25,14 @@ def save_bread_price():
             "bread_quantity_3": StoreUI.bread_entry_7.get(),
             "bread_quantity_4": StoreUI.bread_entry_8.get(),
             "bread_quantity_5": StoreUI.bread_entry_9.get(),
+        },
+        "total_sold": {
+            "total": 0
         }
     }
 
     # define the filename as "data_<date>.json"
-    filename = f"data_{StoreUI.bread_entry_file.get()}.json"
+    filename = f"ventas_{StoreUI.bread_entry_file.get()}.json"
     if os.path.isfile(filename):
         print(f"File {filename} already exists, skipping write")
     else:
@@ -92,7 +95,7 @@ def update_labels():
     with open("data.json") as data_file:
         data = json.load(data_file)
         for x, i in enumerate(StoreUI.bread_sell_labels):
-            i.configure(text=data["bread_prices"]["bread_price_" + str(x + 1)])
+            i.configure(text=data["bread_prices"]["bread_price_" + str(x + 1)] + " MX$")
 
     with open("data.json") as data_file:
         data = json.load(data_file)
@@ -110,7 +113,7 @@ def update_labels():
 
 # --------------------------------------- Sell function ------------------------------------
 def sell():
-    filename = f"data_{StoreUI.bread_entry_file.get()}.json"
+    filename = f"ventas_{StoreUI.bread_entry_file.get()}.json"
     try:
         with open(filename) as data_for_sell:
             data = json.load(data_for_sell)
@@ -121,16 +124,18 @@ def sell():
                    StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8,
                    StoreUI.bread_entry_9]
         for x, i in enumerate(entries):
-            # i.delete(0, END)
             if x <= 3:
                 print("hi")
                 # data["bread_prices"]["bread_price_" + str(x + 1)] = 0
             else:
                 data["bread_quantities"]["bread_quantity_" + str(x - 3)] = \
                     (int(data["bread_quantities"]["bread_quantity_" + str(x - 3)]) -
-                     int(StoreUI.selected_options[x-3].get()))
-                with open(filename, "w") as data_for_sell_new:
-                    # Saving updated data
-                    json.dump(data, data_for_sell_new, indent=4)
-                    # StoreUI.window.update()
-                print(data["bread_quantities"]["bread_quantity_" + str(x - 3)])
+                     int(StoreUI.selected_options[x - 3].get()))
+        with open(filename, "w") as data_for_sell_new:
+            # ---------- Store the total in a string variable ------------------------------
+            string = StoreUI.bread_label_total.cget("text")
+            # ---------- Add the total to the new data of the json data --------------------
+            data["total_sold"]["total"] = \
+                float(data["total_sold"]["total"]) + float(string.replace(" MX$", ""))
+            # Saving updated data
+            json.dump(data, data_for_sell_new, indent=4)
