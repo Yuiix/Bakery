@@ -3,6 +3,7 @@ from tkinter import Canvas, Label, Entry, Tk, Button, Toplevel, Frame, Menu, Opt
 from PIL import Image, ImageTk
 import StoreFunctions
 import json
+from datetime import date
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -75,6 +76,9 @@ for n in range(1, 5):
 bread_label_9 = Label(window, text="Cantidad del Pan extra:")
 bread_label_9.grid(row=2, column=5)
 
+bread_label_file = Label(window, text="Nombre del Archivo:")
+bread_label_file.grid(row=6, column=5)
+
 # -------------------------Label's for bread sells ------------------------
 for i in range(1, 5):
     bread_label_sell = Label(menu_frame, text="Cantidad a vender del Pan #" + str(i))
@@ -93,44 +97,47 @@ try:
             bread_sell_labels.append(label_with_price)
 except FileNotFoundError:
     messagebox.showinfo(title="Error", message="No Data File Found.")
-# StoreFunctions.update_labels()
 
 bread_label_total = Label(menu_frame, text="0")
 bread_label_total.grid(row=5, column=6, padx=10, pady=10)
 # -------------------------Entry's for bread price ----------------------
 bread_entry_1 = Entry(window, width=15)
-bread_entry_1.grid(row=2, column=1)  # columnspan=2)
+bread_entry_1.grid(row=2, column=1)
 
 bread_entry_2 = Entry(window, width=15)
-bread_entry_2.grid(row=3, column=1)  # columnspan=2)
+bread_entry_2.grid(row=3, column=1)
 
 bread_entry_3 = Entry(window, width=15)
-bread_entry_3.grid(row=4, column=1)  # columnspan=2)
+bread_entry_3.grid(row=4, column=1)
 
 bread_entry_4 = Entry(window, width=15)
-bread_entry_4.grid(row=5, column=1)  # columnspan=2)
+bread_entry_4.grid(row=5, column=1)
 # -------------------------Entry's for bread quantity ----------------------
 bread_entry_5 = Entry(window, width=15)
-bread_entry_5.grid(row=2, column=3)  # columnspan=2)
+bread_entry_5.grid(row=2, column=3)
 
 bread_entry_6 = Entry(window, width=15)
-bread_entry_6.grid(row=3, column=3)  # columnspan=2)
+bread_entry_6.grid(row=3, column=3)
 
 bread_entry_7 = Entry(window, width=15)
-bread_entry_7.grid(row=4, column=3)  # columnspan=2)
+bread_entry_7.grid(row=4, column=3)
 
 bread_entry_8 = Entry(window, width=15)
-bread_entry_8.grid(row=5, column=3)  # columnspan=2)
+bread_entry_8.grid(row=5, column=3)
 
 bread_entry_9 = Entry(window, width=15)
-bread_entry_9.grid(row=2, column=6)  # columnspan=2)
+bread_entry_9.grid(row=2, column=6)
+
+bread_entry_file = Entry(window, width=15)
+bread_entry_file.grid(row=6, column=6)
+# get the current date and format it as YYYY-MM-DD
+bread_entry_file.insert(0, date.today().strftime("%Y-%m-%d"))
 # -------------------------Entry's for the bread sell ------------------------
 # Create a list to store the selected options
 selected_options = [StringVar() for i in range(6)]
 # Set the initial values of the selected options
 for i in range(6):
     selected_options[i].set("0")
-    # print(selected_options[i].get())
 for x in range(1, 5):
     quantity_options = [str(i) for i in range(1, 11)]
     quantity_dropdown = OptionMenu(menu_frame, selected_options[x], *quantity_options)
@@ -163,6 +170,10 @@ add_extra_bread_button.grid(row=3, column=6)
 exit_button_for_sells = Button(menu_frame, text="Salir", width=15,
                                command=lambda: StoreFunctions.show_again())
 exit_button_for_sells.grid(row=8, column=1)
+
+button_for_sell = Button(menu_frame, text="Vender", width=15,
+                         command=lambda: StoreFunctions.sell())
+button_for_sell.grid(row=8, column=6)
 # TO DO create the json with the date name
 # TO DO include the total of bread and prices of that day into the json file
 # TO DO include the total of bread sold, left and total money of the day

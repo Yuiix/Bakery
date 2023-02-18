@@ -1,6 +1,7 @@
 from tkinter import messagebox, END
 import json
 import StoreUI
+import os
 
 
 def show_again():
@@ -26,6 +27,16 @@ def save_bread_price():
             "bread_quantity_5": StoreUI.bread_entry_9.get(),
         }
     }
+
+    # define the filename as "data_<date>.json"
+    filename = f"data_{StoreUI.bread_entry_file.get()}.json"
+    if os.path.isfile(filename):
+        print(f"File {filename} already exists, skipping write")
+    else:
+        # write the data dictionary to the JSON file
+        with open(filename, "w") as f:
+            json.dump(bread_data, f, indent=4)
+        print(f"Data written to file {filename}")
 
     try:
         with open("data.json", "r") as data_file:
@@ -95,3 +106,31 @@ def update_labels():
             total = old_total + total
         StoreUI.bread_label_total.configure(text=(str(total) + " MX$"))
         StoreUI.window_3.after(300, update_labels)
+
+
+# --------------------------------------- Sell function ------------------------------------
+def sell():
+    filename = f"data_{StoreUI.bread_entry_file.get()}.json"
+    try:
+        with open(filename) as data_for_sell:
+            data = json.load(data_for_sell)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+    else:
+        entries = [StoreUI.bread_entry_1, StoreUI.bread_entry_2, StoreUI.bread_entry_3, StoreUI.bread_entry_4,
+                   StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8,
+                   StoreUI.bread_entry_9]
+        for x, i in enumerate(entries):
+            # i.delete(0, END)
+            if x <= 3:
+                print("hi")
+                # data["bread_prices"]["bread_price_" + str(x + 1)] = 0
+            else:
+                data["bread_quantities"]["bread_quantity_" + str(x - 3)] = \
+                    (int(data["bread_quantities"]["bread_quantity_" + str(x - 3)]) -
+                     int(StoreUI.selected_options[x-3].get()))
+                with open(filename, "w") as data_for_sell_new:
+                    # Saving updated data
+                    json.dump(data, data_for_sell_new, indent=4)
+                    # StoreUI.window.update()
+                print(data["bread_quantities"]["bread_quantity_" + str(x - 3)])

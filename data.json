@@ -14,10 +14,10 @@
         "bread_price_4": "18"
     },
     "bread_quantities": {
-        "bread_quantity_1": "2",
-        "bread_quantity_2": "2",
-        "bread_quantity_3": "2",
-        "bread_quantity_4": "2",
+        "bread_quantity_1": "100",
+        "bread_quantity_2": "100",
+        "bread_quantity_3": "100",
+        "bread_quantity_4": "100",
         "bread_quantity_5": "2"
     }
 }
