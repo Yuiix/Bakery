@@ -85,7 +85,13 @@ def update_labels():
 
     with open("data.json") as data_file:
         data = json.load(data_file)
+        total = 0
         for x, i in enumerate(StoreUI.bread_multiply_labels):
             i.configure(text=str(float(data["bread_prices"]["bread_price_" + str(x + 1)]) *
-                                 float(StoreUI.selected_options[x + 1].get())))
-        StoreUI.window_3.after(100, update_labels)
+                                 float(StoreUI.selected_options[x + 1].get())) + " MX$")
+            # ------------------------Update the total value ---------------------------------
+            old_total = float(data["bread_prices"]["bread_price_" + str(x + 1)]) * float(
+                StoreUI.selected_options[x + 1].get())
+            total = old_total + total
+        StoreUI.bread_label_total.configure(text=(str(total) + " MX$"))
+        StoreUI.window_3.after(300, update_labels)

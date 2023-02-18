@@ -10,7 +10,7 @@ window = Tk()
 window_2 = Toplevel()
 window_3 = Toplevel()
 window_3.title("Panaderia Plaza Vieja")
-window_3.config(padx=50, pady=50, bg="#F4FCD9")
+window_3.config(padx=50, pady=50, bg="#FEFBE9")
 window_2.title("Panaderia Plaza Vieja")
 window_2.config(padx=50, pady=50, bg="#F4FCD9")
 window.title("Panaderia Plaza Vieja")
@@ -33,7 +33,7 @@ new_image_2 = ImageTk.PhotoImage(resize_image_2)
 canvas_2.create_image(350, 250, image=new_image_2)
 canvas_2.grid(row=0, column=0, columnspan=6)
 # ------------------------- Canvas set up for Third Window -------------#
-canvas_3 = Canvas(window_3, height=400, width=400, bg="#F4FCD9", highlightthickness=0)
+canvas_3 = Canvas(window_3, height=400, width=400, bg="#FEFBE9", highlightthickness=0)
 # Load an image in the script
 image_3 = (Image.open("breads-g518892b9c_1920.jpg"))
 resize_image_3 = image_3.resize((750, 750), Image.ANTIALIAS)
@@ -42,7 +42,7 @@ canvas_3.create_image(0, 0, image=new_image_3)
 canvas_3.grid(row=0, column=0, columnspan=1)
 
 # ------------------------- Frame creation for Third window -----------
-menu_frame = Frame(window_3, bg='gray')
+menu_frame = Frame(window_3, bg='#E1EEDD')
 menu_frame.grid(row=0, column=1, sticky='ns')
 menu = Menu(window_3)
 window_3.config(menu=menu)
@@ -95,6 +95,8 @@ except FileNotFoundError:
     messagebox.showinfo(title="Error", message="No Data File Found.")
 # StoreFunctions.update_labels()
 
+bread_label_total = Label(menu_frame, text="0")
+bread_label_total.grid(row=5, column=6, padx=10, pady=10)
 # -------------------------Entry's for bread price ----------------------
 bread_entry_1 = Entry(window, width=15)
 bread_entry_1.grid(row=2, column=1)  # columnspan=2)
