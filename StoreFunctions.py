@@ -54,6 +54,7 @@ def save_bread_price():
             # Saving updated data
             json.dump(data, data_file, indent=4)
             StoreUI.window.update()
+    messagebox.showinfo(title="Guardado", message="Precios y cantidades Guardadas\nYa puede salir")
 
 
 def check_user():
@@ -139,3 +140,14 @@ def sell():
                 float(data["total_sold"]["total"]) + float(string.replace(" MX$", ""))
             # Saving updated data
             json.dump(data, data_for_sell_new, indent=4)
+    for h in range(6):
+        StoreUI.selected_options[h].set("0")
+    messagebox.showinfo(title="Vendido", message="Informacion guardada")
+
+# def extra_bread_function():
+#     try:
+#         with open(filename) as data_for_sell:
+#             data = json.load(data_for_sell)
+#     except FileNotFoundError:
+#         messagebox.showinfo(title="Error", message="No Data File Found.")
+#     else:

@@ -145,7 +145,7 @@ selected_options = [StringVar() for i in range(6)]
 for i in range(6):
     selected_options[i].set("0")
 for x in range(1, 5):
-    quantity_options = [str(i) for i in range(1, 11)]
+    quantity_options = [str(i) for i in range(0, 11)]
     quantity_dropdown = OptionMenu(menu_frame, selected_options[x], *quantity_options)
     quantity_dropdown.grid(row=x, column=3)
 # ---------------------------- Label with the final price after multiply --------------------------------------

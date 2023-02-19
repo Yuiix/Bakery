@@ -1,6 +1,7 @@
 import os
 import shutil
 import json
+from tkinter import messagebox
 
 
 def create_files_with_sells():
@@ -48,3 +49,4 @@ def create_files_with_sells():
                 with open(txt_filename, 'w') as txt_file:
                     formatted_data = format_data(data)
                     txt_file.write(formatted_data)
+    messagebox.showinfo(title="Tickes", message="Tickets generados")
