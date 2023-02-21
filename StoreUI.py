@@ -219,5 +219,5 @@ distribute_bread_button = Button(menu_frame, text="Pan para repartir", width=15,
 distribute_bread_button.grid(row=9, column=1, padx=10, pady=10)
 
 exit_button_for_distribution = Button(window_4, text="Quitar pan", width=15,
-                                      command=lambda: StoreFunctions.hide_distribution())
+                                      command=lambda: StoreFunctions.distribution_bread_function())
 exit_button_for_distribution.grid(row=6, column=2)

@@ -171,3 +171,24 @@ def extra_bread_function():
             # Saving updated data
             json.dump(data, data_with_extra_bread, indent=4)
             messagebox.showinfo(title="Añadido", message="Se agrego el pan.")
+
+
+def distribution_bread_function():
+    filename = f"ventas_{StoreUI.bread_entry_file.get()}.json"
+    try:
+        with open(filename) as data_for_sell:
+            data = json.load(data_for_sell)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+    else:
+        for x, i in enumerate(StoreUI.distribute_bread_entry):
+            if not (StoreUI.distribute_bread_entry[x].get()) == "":
+                data["bread_quantities"]["bread_quantity_" + str(x + 1)] = \
+                    str(float(data["bread_quantities"]["bread_quantity_" + str(x + 1)]) -
+                        float(StoreUI.distribute_bread_entry[x].get()))
+            else:
+                pass
+        with open(filename, "w") as data_with_distribute_bread:
+            # Saving updated data
+            json.dump(data, data_with_distribute_bread, indent=4)
+            messagebox.showinfo(title="Eliminado", message="Se quito el pan para repartir.\n ya puede salir.")

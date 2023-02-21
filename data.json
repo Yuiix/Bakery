@@ -15,9 +15,9 @@
     },
     "bread_quantities": {
         "bread_quantity_1": "20",
-        "bread_quantity_2": "0",
-        "bread_quantity_3": "0",
-        "bread_quantity_4": "0"
+        "bread_quantity_2": "20",
+        "bread_quantity_3": "20",
+        "bread_quantity_4": "20"
     },
     "total_sold": {
         "total": 0
