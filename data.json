@@ -8,17 +8,16 @@
         "password": "123"
     },
     "bread_prices": {
-        "bread_price_1": "2.5",
-        "bread_price_2": "3.5",
-        "bread_price_3": "4.5",
-        "bread_price_4": "1.5"
+        "bread_price_1": "1",
+        "bread_price_2": "1",
+        "bread_price_3": "1",
+        "bread_price_4": "1"
     },
     "bread_quantities": {
-        "bread_quantity_1": "100",
-        "bread_quantity_2": "100",
-        "bread_quantity_3": "100",
-        "bread_quantity_4": "100",
-        "bread_quantity_5": "2"
+        "bread_quantity_1": "20",
+        "bread_quantity_2": "0",
+        "bread_quantity_3": "0",
+        "bread_quantity_4": "0"
     },
     "total_sold": {
         "total": 0

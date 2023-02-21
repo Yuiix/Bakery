@@ -1,6 +1,7 @@
-from StoreUI import window, window_2, window_3
+from StoreUI import window, window_2, window_3, window_4
 from StoreFunctions import update_labels
 window.withdraw()
 window_3.withdraw()
+window_4.withdraw()
 update_labels()
 window.mainloop()

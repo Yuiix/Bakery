@@ -11,6 +11,9 @@ from FileCreator import create_files_with_sells
 window = Tk()
 window_2 = Toplevel()
 window_3 = Toplevel()
+window_4 = Toplevel()
+window_4.title("Panaderia Plaza Vieja")
+window_4.config(padx=50, pady=50, bg="#ECF9FF")
 window_3.title("Panaderia Plaza Vieja")
 window_3.config(padx=50, pady=50, bg="#ECF9FF")
 window_2.title("Panaderia Plaza Vieja")
@@ -27,14 +30,14 @@ new_image = ImageTk.PhotoImage(resize_image)
 canvas.create_image(200, 200, image=new_image)
 canvas.grid(row=0, column=0, columnspan=3)
 # ------------------------- Canvas set up for Second Window -------------#
-canvas_2 = Canvas(window, height=500, width=500, bg="#F4FCD9", highlightthickness=0)
+# canvas_2 = Canvas(window, height=600, width=600, bg="#F4FCD9", highlightthickness=0)
 # Load an image in the script
-image_2 = (Image.open("bread-g7ad324148_640.jpg"))
-resize_image_2 = image_2.resize((400, 300), Image.ANTIALIAS)
-new_image_2 = ImageTk.PhotoImage(resize_image_2)
-canvas_2.create_image(350, 250, image=new_image_2)
-canvas_2.grid(row=0, column=0, columnspan=6)
-# ------------------------- Canvas set up for Third Window -------------#
+# image_2 = (Image.open("bread-g7ad324148_640.jpg"))
+# resize_image_2 = image_2.resize((300, 300), Image.ANTIALIAS)
+# new_image_2 = ImageTk.PhotoImage(resize_image_2)
+# canvas_2.create_image(300, 300, image=new_image_2)
+# canvas_2.grid(row=0, column=0, columnspan=6)
+# ------------------------- Canvas set up for hird Window -------------#
 canvas_3 = Canvas(window_3, height=400, width=400, bg="#FEFBE9", highlightthickness=0)
 # Load an image in the script
 image_3 = (Image.open("breads-g518892b9c_1920.jpg"))
@@ -70,15 +73,18 @@ for o in range(1, 5):
     bread_label_prices = Label(window, text="Precio del Pan #" + str(o))
     bread_label_prices.grid(row=o + 1, column=0)
 
-# -------------------------Label's for bread quantity ----------------------
+# -------------------------Label's for bread quantity ------------------------------------
 for n in range(1, 5):
     bread_label_quantity = Label(window, text="Cantidad del Pan #" + str(n))
-    bread_label_quantity.grid(row=n + 1, column=2)
-bread_label_9 = Label(window, text="Cantidad del Pan extra:")
-bread_label_9.grid(row=2, column=5)
+    bread_label_quantity.grid(row=n + 1, column=2, padx=5, pady=5)
+    # -------------------------Label's for EXTRA bread quantity ------------------------------------
+for n in range(1, 5):
+    bread_label_quantity = Label(window, text="Cantidad del Pan extra #" + str(n))
+    bread_label_quantity.grid(row=n + 1, column=5, padx=5, pady=5)
 
+# -------------------------Label's for the name of the file to save the ticket ----------------------
 bread_label_file = Label(window, text="Nombre del Archivo:")
-bread_label_file.grid(row=6, column=5)
+bread_label_file.grid(row=7, column=5)
 
 # -------------------------Label's for bread sells ------------------------
 for i in range(1, 5):
@@ -106,7 +112,12 @@ except FileNotFoundError:
 bread_label_total = Label(menu_frame, text="0")
 bread_label_total.config(bg="#FFE7CC")
 bread_label_total.grid(row=5, column=6, padx=10, pady=10)
-# -------------------------Entry's for bread price ----------------------
+# -------------------------Label's for distribution bread ------------------------
+for i in range(1, 5):
+    bread_label_distribution = Label(window_4, text="Cantidad a repartir del pan #" + str(i))
+    bread_label_distribution.config(bg="#FFE7CC")
+    bread_label_distribution.grid(row=i+1, column=1, padx=10, pady=10)
+# -------------------------Entry's for bread price ------------------------------
 bread_entry_1 = Entry(window, width=15)
 bread_entry_1.grid(row=2, column=1)
 
@@ -131,11 +142,22 @@ bread_entry_7.grid(row=4, column=3)
 bread_entry_8 = Entry(window, width=15)
 bread_entry_8.grid(row=5, column=3)
 
-bread_entry_9 = Entry(window, width=15)
-bread_entry_9.grid(row=2, column=6)
-
+# -------------------------Entry's for EXTRA bread quantity ----------------------
+extra_bread_entry = []
+for x in range(1, 5):
+    # quantity_options = [str(i) for i in range(0, 11)]
+    bread_entry_extra = Entry(window, width=15)
+    extra_bread_entry.append(bread_entry_extra)
+    bread_entry_extra.grid(row=x + 1, column=6, padx=5, pady=5)
+# -------------------------Entry's for distribute bread  ----------------------
+distribute_bread_entry = []
+for x in range(1, 5):
+    bread_entry_distribute = Entry(window_4, width=15)
+    distribute_bread_entry.append(bread_entry_distribute)
+    bread_entry_distribute.grid(row=x + 1, column=2, padx=5, pady=5)
+# -------------------------Entry's for the name of the file ------------------------
 bread_entry_file = Entry(window, width=15)
-bread_entry_file.grid(row=6, column=6)
+bread_entry_file.grid(row=7, column=6)
 # get the current date and format it as YYYY-MM-DD
 bread_entry_file.insert(0, date.today().strftime("%Y-%m-%d"))
 # -------------------------Entry's for the bread sell ------------------------
@@ -169,23 +191,33 @@ exit_button.grid(row=7, column=2)
 save_button = Button(window, text="Guardar", width=15, command=lambda: StoreFunctions.save_bread_price())
 save_button.grid(row=7, column=1)
 
+# -------------------------Button's for extra bread quantity ----------------------
 add_extra_bread_button = Button(window, text="Añadir el pan extra", width=15,
-                                command=lambda: StoreFunctions.save_bread_price())
-add_extra_bread_button.grid(row=3, column=6)
-
+                                command=lambda: StoreFunctions.extra_bread_function())
+add_extra_bread_button.grid(row=2, column=7)
+# -------------------------Button's to get the ticket of the day -------------------
 obtain_bread_tickets_button = Button(window, text="Obtener tickets", width=15,
-                                command=lambda: create_files_with_sells())
-obtain_bread_tickets_button.grid(row=6, column=8)
-# -------------------------Button's for bread sells ----------------------
+                                     command=lambda: create_files_with_sells())
+obtain_bread_tickets_button.grid(row=7, column=7)
+# -------------------------Button's for bread sells --------------------------------
+button_for_sell = Button(menu_frame, text="Vender", width=15,
+                         command=lambda: StoreFunctions.sell())
+button_for_sell.grid(row=8, column=6)
 
+# -------------------------Button's for exit --------------------------------------
 exit_button_for_sells = Button(menu_frame, text="Salir", width=15,
                                command=lambda: StoreFunctions.show_again())
 exit_button_for_sells.grid(row=8, column=1)
 
-button_for_sell = Button(menu_frame, text="Vender", width=15,
-                         command=lambda: StoreFunctions.sell())
-button_for_sell.grid(row=8, column=6)
-# TO DO create the json with the date name
-# TO DO include the total of bread and prices of that day into the json file
-# TO DO include the total of bread sold, left and total money of the day
-# TO DO check if that json file already exist and if you want to override it
+exit_button_for_distribution = Button(window_4, text="Salir", width=15,
+                                      command=lambda: StoreFunctions.hide_distribution())
+exit_button_for_distribution.grid(row=6, column=1)
+
+# -------------------------Button's for distribute bread --------------------------------------
+distribute_bread_button = Button(menu_frame, text="Pan para repartir", width=15,
+                                 command=lambda: StoreFunctions.show_distribution())
+distribute_bread_button.grid(row=9, column=1, padx=10, pady=10)
+
+exit_button_for_distribution = Button(window_4, text="Quitar pan", width=15,
+                                      command=lambda: StoreFunctions.hide_distribution())
+exit_button_for_distribution.grid(row=6, column=2)

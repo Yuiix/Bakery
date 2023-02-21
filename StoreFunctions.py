@@ -7,8 +7,18 @@ import os
 def show_again():
     StoreUI.window.withdraw()
     StoreUI.window_3.withdraw()
+    StoreUI.window_4.withdraw()
     StoreUI.window_2.update()
     StoreUI.window_2.deiconify()
+
+
+def show_distribution():
+    StoreUI.window_4.update()
+    StoreUI.window_4.deiconify()
+
+
+def hide_distribution():
+    StoreUI.window_4.withdraw()
 
 
 def save_bread_price():
@@ -24,7 +34,6 @@ def save_bread_price():
             "bread_quantity_2": StoreUI.bread_entry_6.get(),
             "bread_quantity_3": StoreUI.bread_entry_7.get(),
             "bread_quantity_4": StoreUI.bread_entry_8.get(),
-            "bread_quantity_5": StoreUI.bread_entry_9.get(),
         },
         "total_sold": {
             "total": 0
@@ -71,8 +80,7 @@ def check_user():
                 messagebox.showinfo(title=user, message=f"Welcome to a new day of sales")
                 StoreUI.window_2.withdraw()
                 entries = [StoreUI.bread_entry_1, StoreUI.bread_entry_2, StoreUI.bread_entry_3, StoreUI.bread_entry_4,
-                           StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8,
-                           StoreUI.bread_entry_9]
+                           StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8]
                 for x, i in enumerate(entries):
                     i.delete(0, END)
                     if x <= 3:
@@ -122,16 +130,15 @@ def sell():
         messagebox.showinfo(title="Error", message="No Data File Found.")
     else:
         entries = [StoreUI.bread_entry_1, StoreUI.bread_entry_2, StoreUI.bread_entry_3, StoreUI.bread_entry_4,
-                   StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8,
-                   StoreUI.bread_entry_9]
+                   StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8]
         for x, i in enumerate(entries):
             if x <= 3:
-                print("hi")
+                pass
                 # data["bread_prices"]["bread_price_" + str(x + 1)] = 0
             else:
                 data["bread_quantities"]["bread_quantity_" + str(x - 3)] = \
-                    (int(data["bread_quantities"]["bread_quantity_" + str(x - 3)]) -
-                     int(StoreUI.selected_options[x - 3].get()))
+                    str((float(data["bread_quantities"]["bread_quantity_" + str(x - 3)]) -
+                         float(StoreUI.selected_options[x - 3].get())))
         with open(filename, "w") as data_for_sell_new:
             # ---------- Store the total in a string variable ------------------------------
             string = StoreUI.bread_label_total.cget("text")
@@ -144,10 +151,23 @@ def sell():
         StoreUI.selected_options[h].set("0")
     messagebox.showinfo(title="Vendido", message="Informacion guardada")
 
-# def extra_bread_function():
-#     try:
-#         with open(filename) as data_for_sell:
-#             data = json.load(data_for_sell)
-#     except FileNotFoundError:
-#         messagebox.showinfo(title="Error", message="No Data File Found.")
-#     else:
+
+def extra_bread_function():
+    filename = f"ventas_{StoreUI.bread_entry_file.get()}.json"
+    try:
+        with open(filename) as data_for_sell:
+            data = json.load(data_for_sell)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+    else:
+        for x, i in enumerate(StoreUI.extra_bread_entry):
+            if not (StoreUI.extra_bread_entry[x].get()) == "":
+                data["bread_quantities"]["bread_quantity_" + str(x + 1)] = \
+                    str(float(data["bread_quantities"]["bread_quantity_" + str(x + 1)]) +
+                        float(StoreUI.extra_bread_entry[x].get()))
+            else:
+                pass
+        with open(filename, "w") as data_with_extra_bread:
+            # Saving updated data
+            json.dump(data, data_with_extra_bread, indent=4)
+            messagebox.showinfo(title="Añadido", message="Se agrego el pan.")
