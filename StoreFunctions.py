@@ -51,7 +51,7 @@ def save_bread_price():
         print(f"Data written to file {filename}")
 
     try:
-        with open("data.json", "r") as data_file:
+        with open(StoreUI.json_path, "r") as data_file:
             # Reading old data
             data = json.load(data_file)
     except FileNotFoundError:
@@ -59,7 +59,7 @@ def save_bread_price():
     else:
         # Updating old data with new data
         data.update(bread_data)
-        with open("data.json", "w") as data_file:
+        with open(StoreUI.json_path, "w") as data_file:
             # Saving updated data
             json.dump(data, data_file, indent=4)
             StoreUI.window.update()
@@ -69,7 +69,7 @@ def save_bread_price():
 def check_user():
     user = StoreUI.email_entry.get()
     try:
-        with open("data.json") as data_file:
+        with open(StoreUI.json_path) as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
         messagebox.showinfo(title="Error", message="No Data File Found.")
@@ -101,12 +101,12 @@ def check_user():
 # ---------------------Function to update the labels --------------------------------------
 
 def update_labels():
-    with open("data.json") as data_file:
+    with open(StoreUI.json_path) as data_file:
         data = json.load(data_file)
         for x, i in enumerate(StoreUI.bread_sell_labels):
             i.configure(text=data["bread_prices"]["bread_price_" + str(x + 1)] + " MX$")
 
-    with open("data.json") as data_file:
+    with open(StoreUI.json_path) as data_file:
         data = json.load(data_file)
         total = 0
         for x, i in enumerate(StoreUI.bread_multiply_labels):

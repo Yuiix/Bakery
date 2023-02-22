@@ -3,6 +3,7 @@ from tkinter import Canvas, Label, Entry, Tk, Button, Toplevel, Frame, Menu, Opt
 from PIL import Image, ImageTk
 import StoreFunctions
 import json
+import os
 from datetime import date
 from FileCreator import create_files_with_sells
 
@@ -24,8 +25,12 @@ window.config(padx=50, pady=50, bg="#F4FCD9")
 # ------------------------- Canvas set up for Main Window -------------#
 canvas = Canvas(window_2, height=400, width=400, bg="#F4FCD9", highlightthickness=0)
 # Load an image in the script
-image = (Image.open("dough-g6d0913849_1920.jpg"))
-resize_image = image.resize((300, 200), Image.ANTIALIAS)
+basedir = os.path.dirname(__file__)
+image_path = os.path.join(basedir, "dough-g6d0913849_1920.jpg")
+image_path2 = os.path.join(basedir, "breads-g518892b9c_1920.jpg")
+json_path = os.path.join(basedir, "data.json")
+image = Image.open(image_path)
+resize_image = image.resize((300, 200), resample=Image.LANCZOS)
 new_image = ImageTk.PhotoImage(resize_image)
 canvas.create_image(200, 200, image=new_image)
 canvas.grid(row=0, column=0, columnspan=3)
@@ -40,8 +45,8 @@ canvas.grid(row=0, column=0, columnspan=3)
 # ------------------------- Canvas set up for hird Window -------------#
 canvas_3 = Canvas(window_3, height=400, width=400, bg="#FEFBE9", highlightthickness=0)
 # Load an image in the script
-image_3 = (Image.open("breads-g518892b9c_1920.jpg"))
-resize_image_3 = image_3.resize((400, 400), Image.ANTIALIAS)
+image_3 = (Image.open(image_path2))
+resize_image_3 = image_3.resize((400, 400), resample=Image.LANCZOS)
 new_image_3 = ImageTk.PhotoImage(resize_image_3)
 canvas_3.create_image(200, 200, image=new_image_3)
 canvas_3.grid(row=0, column=0, columnspan=1)
@@ -97,7 +102,7 @@ bread_label_14.config(bg="#FFE7CC")
 bread_label_14.grid(row=5, column=1, padx=10, pady=10)
 # -------------------------Label's for bread sells price ----------------------
 try:
-    with open("data.json") as data_file:
+    with open(json_path) as data_file:
         data = json.load(data_file)
         bread_sell_labels = []
         for i in range(1, 5):
@@ -172,7 +177,7 @@ for x in range(1, 5):
     quantity_dropdown.grid(row=x, column=3)
 # ---------------------------- Label with the final price after multiply --------------------------------------
 try:
-    with open("data.json") as data_file:
+    with open(json_path) as data_file:
         data = json.load(data_file)
         bread_multiply_labels = []
         for i in range(1, 5):
