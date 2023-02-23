@@ -7,28 +7,32 @@ import os
 from datetime import date
 from FileCreator import create_files_with_sells
 
-# ---------------------------- UI SETUP ------------------------------- #
-
-window = Tk()
-window_2 = Toplevel()
-window_3 = Toplevel()
-window_4 = Toplevel()
-window_4.title("Panaderia Plaza Vieja")
-window_4.config(padx=50, pady=50, bg="#ECF9FF")
-window_3.title("Panaderia Plaza Vieja")
-window_3.config(padx=50, pady=50, bg="#ECF9FF")
-window_2.title("Panaderia Plaza Vieja")
-window_2.config(padx=50, pady=50, bg="#F4FCD9")
-window.title("Panaderia Plaza Vieja")
-window.config(padx=50, pady=50, bg="#F4FCD9")
-
-# ------------------------- Canvas set up for Main Window -------------#
-canvas = Canvas(window_2, height=400, width=400, bg="#F4FCD9", highlightthickness=0)
 # Load an image in the script
 basedir = os.path.dirname(__file__)
 image_path = os.path.join(basedir, "dough-g6d0913849_1920.jpg")
 image_path2 = os.path.join(basedir, "breads-g518892b9c_1920.jpg")
 json_path = os.path.join(basedir, "data.json")
+icon_path = os.path.join(basedir, "favicon.ico")
+# ---------------------------- UI SETUP ------------------------------------- #
+# ---------------------------- Set window one ------------------------------- #
+window = Tk()
+window.title("Panaderia Plaza Vieja")
+window.config(padx=50, pady=50, bg="#F4FCD9")
+# ---------------------------- Set window two ------------------------------- #
+window_2 = Toplevel()
+window_2.title("Panaderia Plaza Vieja")
+window_2.config(padx=50, pady=50, bg="#F4FCD9")
+# ---------------------------- Set window three ------------------------------- #
+window_3 = Toplevel()
+window_3.title("Panaderia Plaza Vieja")
+window_3.config(padx=50, pady=50, bg="#ECF9FF")
+window_4 = Toplevel()
+# ---------------------------- Set window four ------------------------------- #
+window_4.title("Panaderia Plaza Vieja")
+window_4.config(padx=50, pady=50, bg="#ECF9FF")
+# ------------------------- Canvas set up for Main Window -------------#
+canvas = Canvas(window_2, height=400, width=400, bg="#F4FCD9", highlightthickness=0)
+
 image = Image.open(image_path)
 resize_image = image.resize((300, 200), resample=Image.LANCZOS)
 new_image = ImageTk.PhotoImage(resize_image)
@@ -82,7 +86,7 @@ for o in range(1, 5):
 for n in range(1, 5):
     bread_label_quantity = Label(window, text="Cantidad del Pan #" + str(n))
     bread_label_quantity.grid(row=n + 1, column=2, padx=5, pady=5)
-    # -------------------------Label's for EXTRA bread quantity ------------------------------------
+# -------------------------Label's for EXTRA bread quantity ------------------------------------
 for n in range(1, 5):
     bread_label_quantity = Label(window, text="Cantidad del Pan extra #" + str(n))
     bread_label_quantity.grid(row=n + 1, column=5, padx=5, pady=5)
