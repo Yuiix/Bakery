@@ -12,13 +12,14 @@ def show_again():
     StoreUI.window_2.deiconify()
 
 
-def show_distribution():
-    StoreUI.window_4.update()
-    StoreUI.window_4.deiconify()
+def show_window(window):
+    """Function to show and update the necessary window, previously created"""
+    window.update()
+    window.deiconify()
 
 
-def hide_distribution():
-    StoreUI.window_4.withdraw()
+def hide_window(window):
+    window.withdraw()
 
 
 def save_bread_price():
@@ -63,7 +64,7 @@ def save_bread_price():
             # Saving updated data
             json.dump(data, data_file, indent=4)
             StoreUI.window.update()
-    messagebox.showinfo(title="Guardado", message="Precios y cantidades Guardadas\nYa puede salir")
+    messagebox.showinfo(title="Guardado", message="Precios y cantidades guardadas\nYa puede salir")
 
 
 def check_user():
@@ -77,7 +78,7 @@ def check_user():
         if user in data:
             password = data[user]["password"]
             if StoreUI.password_entry.get() == password and user == "socorro0708":
-                messagebox.showinfo(title=user, message=f"Welcome to a new day of sales")
+                messagebox.showinfo(title="Bienvenido", message=f"Bienvenido, ingrese los datos para el dia de hoy")
                 StoreUI.window_2.withdraw()
                 entries = [StoreUI.bread_entry_1, StoreUI.bread_entry_2, StoreUI.bread_entry_3, StoreUI.bread_entry_4,
                            StoreUI.bread_entry_5, StoreUI.bread_entry_6, StoreUI.bread_entry_7, StoreUI.bread_entry_8]

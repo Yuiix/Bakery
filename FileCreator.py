@@ -33,7 +33,7 @@ def create_files_with_sells():
         value5 = data['bread_quantities']["bread_quantity_4"]
 
         # Format the values into a string
-        formatted_string = f"El dia de hoy vendiste en total: {value1} MX$\nDel pan #1 te sobró: {value2} pza" \
+        formatted_string = f"##### Panadería Plaza Vieja #####\nEl dia de hoy vendiste en total: {value1} MX$\nDel pan #1 te sobró: {value2} pza" \
                            f"\nDel pan #2 te sobró: {value3} pza\nDel pan #3 te sobró: {value4} pza" \
                            f"\nDel pan #4 te sobró: {value5} pza\n"
 
